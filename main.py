@@ -97,12 +97,16 @@ while 1:
     _, img = cap.read()
     cv2.putText(img, 'press \'q\' to exit...', (255, 15), cv2.FONT_HERSHEY_SIMPLEX,
                 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-    if(flag):
-        result = np.matmul(np.linalg.inv(mtx),[mouse_x, mouse_y, 1])
+    result = [0, 0, 0]
+    if flag:
+        result = np.dot(np.linalg.inv(mtx),[mouse_x, mouse_y, 1])
+        result = np.arctan(result)
         print(result)
         flag = False
 
     cv2.putText(img, '({},{})'.format(mouse_x, mouse_y), (20, 440), cv2.FONT_HERSHEY_SIMPLEX,
+                0.5, (0, 255, 0), 2, cv2.LINE_AA)
+    cv2.putText(img, '({},{})'.format(180/np.pi*result[0], 180/np.pi*result[1]), (20, 460), cv2.FONT_HERSHEY_SIMPLEX,
                 0.5, (0, 255, 0), 2, cv2.LINE_AA)
     cv2.imshow('image', img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
